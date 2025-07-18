@@ -5,12 +5,18 @@ Aplicativo minimalista para consultar condições climáticas com design clean e
 ✨ Sobre o Projeto
 
 Aplicativo Android desenvolvido em Kotlin que oferece:
+
 ✅ Previsão do tempo em tempo real via API OpenWeather.
+
 📍 Geolocalização automática ou cidade padrão Rondonópolis - Mato Grosso.
+
 🎨 Interface moderna com Jetpack Compose.
+
 🔌 Arquitetura com injeção de dependência (Hilt).
+
 -------------------------------------------------------------------------------------------------
 🚀 Roadmap
+
 Versão	        Status	            Observação
 -------------------------------------------------------------------------------------------------
 Kotlin 1.9	    ✅ Estável	        Compatível com Android 12+ (API 31)
