@@ -20,16 +20,26 @@ Aplicativo Android desenvolvido em Kotlin que oferece:
 Versão	        Status	            Observação
 -------------------------------------------------------------------------------------------------
 Kotlin 1.9	    ✅ Estável	        Compatível com Android 12+ (API 31)
+
 Jetpack Compose	✅ Implementado	    UI declarativa
+
 Versão Wear OS	🔄 Em breve	        Integração com relógios smart
+
 -------------------------------------------------------------------------------------------------
 🛠️ Tecnologias & Ferramentas
+
 Componente	Detalhes
+
 Linguagem	Kotlin 1.9
+
 IDE	Android Studio Narwhal (2025.1.1)
+
 Clean Architecture
+
 Bibliotecas	Retrofit (API), Hilt (DI), Coroutines, Jetpack Compose
+
 API Externa	OpenWeatherMap (https://openweathermap.org/api)
+
 -------------------------------------------------------------------------------------------------
 📂 Estrutura do Projeto
 text
