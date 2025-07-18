@@ -1,0 +1,21 @@
+# ▶️ Android Studio
+.gradle/
+.idea/
+*.iml
+local.properties  # 🔥 O MAIS IMPORTANTE (tem suas chaves de API!)
+build/
+captures/
+.navigation/
+.DS_Store  # Se estiver no Mac
+
+# ▶️ Arquivos gerados pelo sistema
+*.log
+*.apk
+*.aab
+
+# ▶️ Firebase/Google Services
+google-services.json  # Se usar Firebase
+
+# ▶️ Pastas específicas
+app/build/
+app/release/
