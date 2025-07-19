@@ -1,21 +1,25 @@
-# ▶️ Android Studio
+# Arquivos sensíveis do Android
+local.properties
+*.keystore
+*.jks
+
+# Pastas de build e configurações
 .gradle/
 .idea/
-*.iml
-local.properties  # 🔥 O MAIS IMPORTANTE (tem suas chaves de API!)
 build/
-captures/
-.navigation/
-.DS_Store  # Se estiver no Mac
+app/build/
+app/debug/  # <- Especificamente o seu diretório "debug" não rastreado
 
-# ▶️ Arquivos gerados pelo sistema
+# Arquivos gerados pelo Android Studio
+.idea/
+*.iml
 *.log
+
+# Outros arquivos temporários
+.DS_Store
+*.swp
 *.apk
 *.aab
-
-# ▶️ Firebase/Google Services
-google-services.json  # Se usar Firebase
-
-# ▶️ Pastas específicas
-app/build/
-app/release/
+app/debug/output-metadata.json
+app/release/output-metadata.json
+app/release/baselineProfiles/
