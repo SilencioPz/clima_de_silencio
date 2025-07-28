@@ -8,7 +8,7 @@ Aplicativo Android desenvolvido em Kotlin que oferece:
 
 ✅ Previsão do tempo em tempo real via API OpenWeather.
 
-📍 Geolocalização automática ou cidade padrão Rondonópolis - Mato Grosso.
+📍 Geolocalização automática, cidade padrão (Rondonópolis - Mato Grosso), 5 capitais brasileiras e barra de pesquisa.
 
 🎨 Interface moderna com Jetpack Compose.
 
@@ -25,6 +25,31 @@ Jetpack Compose	✅ Implementado	    UI declarativa
 
 Versão Wear OS	🔄 Em breve	        Integração com relógios smart
 
+-------------------------------------------------------------------------------------------------
+## 🌐 API REST Utilizada  
+
+### OpenWeatherMap  
+
+O app consome a API do **[OpenWeatherMap](https://openweathermap.org/api)** para buscar dados meteorológicos em tempo real.  
+
+### Endpoints Principais  
+
+- **Previsão por Coordenadas (Lat/Lon):**
+- 
+  ```http
+  
+  GET https://api.openweathermap.org/data/2.5/weather?lat={latitude}&lon={longitude}&appid={API_KEY}&units=metric
+
+    Retorna dados do clima baseado na localização geográfica.
+
+    Previsão por Nome da Cidade:
+  
+    http
+
+GET https://api.openweathermap.org/data/2.5/weather?q={NOME_DA_CIDADE}&appid={API_KEY}&units=metric
+
+    Busca clima pelo nome da cidade (ex: q=Paris).
+    
 -------------------------------------------------------------------------------------------------
 🛠️ Tecnologias & Ferramentas
 
