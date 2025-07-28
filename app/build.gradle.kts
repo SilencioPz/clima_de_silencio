@@ -82,7 +82,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.2.0")
 
     // Hilt
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
@@ -90,7 +90,7 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     ksp("androidx.room:room-compiler:2.6.1")
-//    implementation("com.squareup.javapoet:javapoet:1.13.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -99,12 +99,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-//    add("ksp", libs.hilt.compiler)
-//    add("ksp", "androidx.room:room-compiler:2.6.1")
 }
-
-//apply(plugin = "com.google.devtools.ksp")
 
 fun getLocalProperty(key: String): String {
     val props = Properties()

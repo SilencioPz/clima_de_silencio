@@ -8,6 +8,9 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.systemGestureExclusion
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,27 +19,60 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.climadesilencionoar.R
 import com.example.climadesilencionoar.models.WeatherResponse
-import com.example.climadesilencionoar.remote.WeatherServiceApi
-import com.example.climadesilencionoar.utils.Constants
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun MainScreen(
-    weatherData: WeatherResponse? = null,
-    isLoading: Boolean = false,
-    errorMessage: String? = null,
-    onRequestLocation: () -> Unit = {}
+    viewModel: WeatherViewModel = hiltViewModel(),
+    weatherData: WeatherResponse?,
+    isLoading: Boolean,
+    errorMessage: String?,
+    onRequestLocation: () -> Unit
 ) {
+
+    var searchQuery by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp),
+            .padding(16.dp)
+            .systemGestureExclusion(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        OutlinedTextField(
+            value = searchQuery,
+            onValueChange = { searchQuery = it },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            placeholder = { Text("Pesquise uma cidade...") },
+            trailingIcon = {
+                IconButton(
+                    onClick = {
+                        if (searchQuery.isNotBlank()) {
+                            viewModel.fetchWeatherByCityName(searchQuery)
+                        }
+                    }
+                ) {
+                    Icon(Icons.Default.Search, contentDescription = "Buscar")
+                }
+            },
+            singleLine = true
+        )
+
+        if (isLoading && weatherData == null) {
+            LinearProgressIndicator(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(4.dp)
+            )
+        }
+
         Image(
             painter = painterResource(id = R.drawable.silenciopz_logo),
             contentDescription = "Logo do App",
@@ -45,7 +81,7 @@ fun MainScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        CapitaisTemperaturaList()
+        CapitaisTemperaturaList(viewModel = viewModel)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -73,24 +109,24 @@ fun MainScreen(
 }
 
 @Composable
-fun CapitaisTemperaturaList() {
+fun CapitaisTemperaturaList(viewModel: WeatherViewModel) {
     val capitais = listOf(
-        "São Paulo" to "-23.5505,-46.6333",
-        "Rio de Janeiro" to "-22.9068,-43.1729",
-        "Belo Horizonte" to "-19.9191,-43.9387",
-        "Curitiba" to "-25.4296,-49.2719",
-        "Brasília" to "-15.7801,-47.9292"
+        "São Paulo" to Pair(-23.5505, -46.6333),
+        "Rio de Janeiro" to Pair(-22.9068, -43.1729),
+        "Belo Horizonte" to Pair(-19.9191, -43.9387),
+        "Curitiba" to Pair(-25.4296, -49.2719),
+        "Brasília" to Pair(-15.7801, -47.9292)
     )
 
-    var capitaisClima by remember { mutableStateOf<Map<String,
-            WeatherResponse?>>(emptyMap()) }
+    val capitaisClima by viewModel.capitaisData.collectAsState()
 
     LaunchedEffect(Unit) {
         capitais.forEach { (nome, coordenadas) ->
-            val (lat, lon) = coordenadas.split(",")
-            fetchClimaPorCoordenadas(lat.toDouble(), lon.toDouble()) { resposta ->
-                capitaisClima = capitaisClima + (nome to resposta)
-            }
+            viewModel.fetchCapitalWeather(
+                nome,
+                coordenadas.first,
+                coordenadas.second
+            )
         }
     }
 
@@ -260,28 +296,6 @@ fun traduzirDescricao(descricao: String): String {
         "heavy intensity rain" -> "Chuva intensa"
         else -> descricao.replaceFirstChar { it.uppercase() }
     }
-}
-
-private fun fetchClimaPorCoordenadas(
-    lat: Double,
-    lon: Double,
-    callback: (WeatherResponse?) -> Unit
-) {
-    val retrofit = retrofit2.Retrofit.Builder()
-        .baseUrl(Constants.BASE_URL)
-        .addConverterFactory(retrofit2.converter.gson.GsonConverterFactory.create())
-        .build()
-
-    val service = retrofit.create(WeatherServiceApi::class.java)
-    service.getWeatherDetails(lat, lon, Constants.APP_ID, Constants.UNIDADE_METRICA)
-        .enqueue(object : retrofit2.Callback<WeatherResponse> {
-            override fun onResponse(call: retrofit2.Call<WeatherResponse>, response: retrofit2.Response<WeatherResponse>) {
-                callback(response.body())
-            }
-            override fun onFailure(call: retrofit2.Call<WeatherResponse>, t: Throwable) {
-                callback(null)
-            }
-        })
 }
 
 data class WeatherInfoItem(val label: String, val value: String, val icon: Int)
